@@ -1,0 +1,39 @@
+[project]
+authors = ["Silvio Traversaro <silvio@traversaro.it>", ""]
+channels = ["conda-forge"]
+name = "serial_cpp"
+platforms = ["win-64", "linux-64", "osx-arm64", "linux-aarch64"]
+
+[target.win.activation.env]
+CMAKE_INSTALL_PREFIX = "%CONDA_PREFIX%\\Library"
+
+[target.unix.activation.env]
+CMAKE_INSTALL_PREFIX = "$CONDA_PREFIX"
+
+[tasks]
+configure = { cmd = [
+    "cmake",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DBUILD_TESTING:BOOL=ON",
+    # Use the cross-platform Ninja generator
+    "-G",
+    "Ninja",
+    # The source is in the root directory
+    "-S",
+    ".",
+    # We wanna build in the .build directory
+    "-B",
+    ".build",
+]}
+
+build = { cmd = "cmake --build .build --config Release", depends-on = ["configure"] }
+test = { cmd = "ctest --test-dir .build --build-config Release", depends-on = ["build"] }
+install = { cmd = ["cmake", "--install", ".build", "--config", "Release"], depends-on = ["build"] }
+uninstall = { cmd = ["cmake", "--build", ".build", "--target", "uninstall"]}
+
+[dependencies]
+cxx-compiler = "*"
+cmake = "*"
+ninja = "*"
+pkg-config = "*"
+gtest = "*"
