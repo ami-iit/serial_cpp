@@ -1,4 +1,3 @@
-.*
 .DS_Store
 *.coverage
 *.egg-info
@@ -36,3 +35,4 @@ Release
 # pixi environments
 .pixi
 *.egg-info
+.build
