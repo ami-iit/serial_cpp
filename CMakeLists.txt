@@ -14,6 +14,7 @@ project(serial_cpp VERSION ${SERIAL_CPP_MAJOR_VERSION}.${SERIAL_CPP_MINOR_VERSIO
 # For historical reasons, the default library type is static, but shared is also supported
 option(BUILD_SHARED_LIBS "Build libraries as shared as opposed to static" OFF)
 option(BUILD_TESTING "Build tests" OFF)
+option(serial_cpp_INSTALL "Enable generation of serial_cpp install targets" ON)
 
 # Default install locations
 include(GNUInstallDirs)
@@ -73,47 +74,49 @@ add_dependencies(serial_cpp_example ${PROJECT_NAME}::${PROJECT_NAME})
 target_link_libraries(serial_cpp_example ${PROJECT_NAME}::${PROJECT_NAME})
 
 ## Install library
-install(TARGETS ${PROJECT_NAME}
-    EXPORT ${PROJECT_NAME}Targets
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
-
-## Install headers
-install(FILES include/serial_cpp/serial.h include/serial_cpp/v8stdint.h include/serial_cpp/serial_compat.h
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}")
-
-## Generate and install CMake config files
-include(CMakePackageConfigHelpers)
-
-set(SERIAL_CPP_CMAKE_FILES_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
-
-install(EXPORT ${PROJECT_NAME}Targets
-        FILE ${PROJECT_NAME}Targets.cmake
-        NAMESPACE ${PROJECT_NAME}::
-        DESTINATION "${SERIAL_CPP_CMAKE_FILES_INSTALL_DIR}"
-)
-
-configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
-  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-  INSTALL_DESTINATION "${SERIAL_CPP_CMAKE_FILES_INSTALL_DIR}"
-)
-
-write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-    VERSION "${serial_cpp_VERSION}"
-    COMPATIBILITY AnyNewerVersion
-)
-
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-              "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-    DESTINATION "${SERIAL_CPP_CMAKE_FILES_INSTALL_DIR}")
-
-
-## Install package.xml
-install(FILES package.xml
-    DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}")
+if(serial_cpp_INSTALL)
+    install(TARGETS ${PROJECT_NAME}
+        EXPORT ${PROJECT_NAME}Targets
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+    
+    ## Install headers
+    install(FILES include/serial_cpp/serial.h include/serial_cpp/v8stdint.h include/serial_cpp/serial_compat.h
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}")
+    
+    ## Generate and install CMake config files
+    include(CMakePackageConfigHelpers)
+    
+    set(SERIAL_CPP_CMAKE_FILES_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+    
+    install(EXPORT ${PROJECT_NAME}Targets
+            FILE ${PROJECT_NAME}Targets.cmake
+            NAMESPACE ${PROJECT_NAME}::
+            DESTINATION "${SERIAL_CPP_CMAKE_FILES_INSTALL_DIR}"
+    )
+    
+    configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+      "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+      INSTALL_DESTINATION "${SERIAL_CPP_CMAKE_FILES_INSTALL_DIR}"
+    )
+    
+    write_basic_package_version_file(
+        "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+        VERSION "${serial_cpp_VERSION}"
+        COMPATIBILITY AnyNewerVersion
+    )
+    
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+                  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+        DESTINATION "${SERIAL_CPP_CMAKE_FILES_INSTALL_DIR}")
+    
+    
+    ## Install package.xml
+    install(FILES package.xml
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}")
+endif()
 
 ## Tests
 include(CTest)

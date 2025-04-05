@@ -49,10 +49,11 @@ target_link_libraries(<target> PRIVATE serial_cpp::serial_cpp)
 If you only need to use `serial_cpp` inside a given CMake project, it make sense to include it via the [CMake's `FetchContent` module](https://cmake.org/cmake/help/latest/module/FetchContent.html):
 
 ~~~cmake
+include(FetchContent)
 FetchContent_Declare(
   serial_cpp
   GIT_REPOSITORY https://github.com/ami-iit/serial_cpp.git
-  GIT_TAG        v1.3.0 # or use the tag or commit you prefer
+  GIT_TAG        v1.3.1 # or use the tag or commit you prefer
 )
 
 FetchContent_MakeAvailable(serial_cpp)
