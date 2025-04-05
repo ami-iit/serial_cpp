@@ -40,22 +40,22 @@
 #ifndef SERIAL_IMPL_UNIX_H
 #define SERIAL_IMPL_UNIX_H
 
-#include "serial/serial.h"
+#include "serial_cpp/serial.h"
 
 #include <pthread.h>
 
-namespace serial {
+namespace serial_cpp {
 
 using std::size_t;
 using std::string;
 using std::invalid_argument;
 
-using serial::SerialException;
-using serial::IOException;
+using serial_cpp::SerialException;
+using serial_cpp::IOException;
 
 class MillisecondTimer {
 public:
-  MillisecondTimer(const uint32_t millis);         
+  MillisecondTimer(const uint32_t millis);
   int64_t remaining();
 
 private:
@@ -63,7 +63,7 @@ private:
   timespec expiry;
 };
 
-class serial::Serial::SerialImpl {
+class serial_cpp::Serial::SerialImpl {
 public:
   SerialImpl (const string &port,
               unsigned long baudrate,

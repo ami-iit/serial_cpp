@@ -4,21 +4,21 @@
 
 #include <sstream>
 
-#include "serial/impl/win.h"
+#include "serial_cpp/impl/win.h"
 
 using std::string;
 using std::wstring;
 using std::stringstream;
 using std::invalid_argument;
-using serial::Serial;
-using serial::Timeout;
-using serial::bytesize_t;
-using serial::parity_t;
-using serial::stopbits_t;
-using serial::flowcontrol_t;
-using serial::SerialException;
-using serial::PortNotOpenedException;
-using serial::IOException;
+using serial_cpp::Serial;
+using serial_cpp::Timeout;
+using serial_cpp::bytesize_t;
+using serial_cpp::parity_t;
+using serial_cpp::stopbits_t;
+using serial_cpp::flowcontrol_t;
+using serial_cpp::SerialException;
+using serial_cpp::PortNotOpenedException;
+using serial_cpp::IOException;
 
 inline wstring
 _prefix_port_if_needed(const wstring &input)
@@ -370,7 +370,7 @@ Serial::SerialImpl::getPort () const
 }
 
 void
-Serial::SerialImpl::setTimeout (serial::Timeout &timeout)
+Serial::SerialImpl::setTimeout (serial_cpp::Timeout &timeout)
 {
   timeout_ = timeout;
   if (is_open_) {
@@ -378,7 +378,7 @@ Serial::SerialImpl::setTimeout (serial::Timeout &timeout)
   }
 }
 
-serial::Timeout
+serial_cpp::Timeout
 Serial::SerialImpl::getTimeout () const
 {
   return timeout_;
@@ -400,7 +400,7 @@ Serial::SerialImpl::getBaudrate () const
 }
 
 void
-Serial::SerialImpl::setBytesize (serial::bytesize_t bytesize)
+Serial::SerialImpl::setBytesize (serial_cpp::bytesize_t bytesize)
 {
   bytesize_ = bytesize;
   if (is_open_) {
@@ -408,14 +408,14 @@ Serial::SerialImpl::setBytesize (serial::bytesize_t bytesize)
   }
 }
 
-serial::bytesize_t
+serial_cpp::bytesize_t
 Serial::SerialImpl::getBytesize () const
 {
   return bytesize_;
 }
 
 void
-Serial::SerialImpl::setParity (serial::parity_t parity)
+Serial::SerialImpl::setParity (serial_cpp::parity_t parity)
 {
   parity_ = parity;
   if (is_open_) {
@@ -423,14 +423,14 @@ Serial::SerialImpl::setParity (serial::parity_t parity)
   }
 }
 
-serial::parity_t
+serial_cpp::parity_t
 Serial::SerialImpl::getParity () const
 {
   return parity_;
 }
 
 void
-Serial::SerialImpl::setStopbits (serial::stopbits_t stopbits)
+Serial::SerialImpl::setStopbits (serial_cpp::stopbits_t stopbits)
 {
   stopbits_ = stopbits;
   if (is_open_) {
@@ -438,14 +438,14 @@ Serial::SerialImpl::setStopbits (serial::stopbits_t stopbits)
   }
 }
 
-serial::stopbits_t
+serial_cpp::stopbits_t
 Serial::SerialImpl::getStopbits () const
 {
   return stopbits_;
 }
 
 void
-Serial::SerialImpl::setFlowcontrol (serial::flowcontrol_t flowcontrol)
+Serial::SerialImpl::setFlowcontrol (serial_cpp::flowcontrol_t flowcontrol)
 {
   flowcontrol_ = flowcontrol;
   if (is_open_) {
@@ -453,7 +453,7 @@ Serial::SerialImpl::setFlowcontrol (serial::flowcontrol_t flowcontrol)
   }
 }
 
-serial::flowcontrol_t
+serial_cpp::flowcontrol_t
 Serial::SerialImpl::getFlowcontrol () const
 {
   return flowcontrol_;

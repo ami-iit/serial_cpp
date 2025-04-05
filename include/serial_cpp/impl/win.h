@@ -39,20 +39,20 @@
 #ifndef SERIAL_IMPL_WINDOWS_H
 #define SERIAL_IMPL_WINDOWS_H
 
-#include "serial/serial.h"
+#include "serial_cpp/serial.h"
 
 #include "windows.h"
 
-namespace serial {
+namespace serial_cpp {
 
 using std::string;
 using std::wstring;
 using std::invalid_argument;
 
-using serial::SerialException;
-using serial::IOException;
+using serial_cpp::SerialException;
+using serial_cpp::IOException;
 
-class serial::Serial::SerialImpl {
+class serial_cpp::Serial::SerialImpl {
 public:
   SerialImpl (const string &port,
               unsigned long baudrate,

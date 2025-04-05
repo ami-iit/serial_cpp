@@ -32,7 +32,7 @@
 #include <mach/mach.h>
 #endif
 
-#include "serial/impl/unix.h"
+#include "serial_cpp/impl/unix.h"
 
 #ifndef TIOCINQ
 #ifdef FIONREAD
@@ -49,11 +49,11 @@
 using std::string;
 using std::stringstream;
 using std::invalid_argument;
-using serial::MillisecondTimer;
-using serial::Serial;
-using serial::SerialException;
-using serial::PortNotOpenedException;
-using serial::IOException;
+using serial_cpp::MillisecondTimer;
+using serial_cpp::Serial;
+using serial_cpp::SerialException;
+using serial_cpp::PortNotOpenedException;
+using serial_cpp::IOException;
 
 
 MillisecondTimer::MillisecondTimer (const uint32_t millis)
@@ -666,7 +666,7 @@ Serial::SerialImpl::write (const uint8_t *data, size_t length)
         ssize_t bytes_written_now =
           ::write (fd_, data + bytes_written, length - bytes_written);
 
-        // even though pselect returned readiness the call might still be 
+        // even though pselect returned readiness the call might still be
         // interrupted. In that case simply retry.
         if (bytes_written_now == -1 && errno == EINTR) {
           continue;
@@ -725,12 +725,12 @@ Serial::SerialImpl::getPort () const
 }
 
 void
-Serial::SerialImpl::setTimeout (serial::Timeout &timeout)
+Serial::SerialImpl::setTimeout (serial_cpp::Timeout &timeout)
 {
   timeout_ = timeout;
 }
 
-serial::Timeout
+serial_cpp::Timeout
 Serial::SerialImpl::getTimeout () const
 {
   return timeout_;
@@ -751,56 +751,56 @@ Serial::SerialImpl::getBaudrate () const
 }
 
 void
-Serial::SerialImpl::setBytesize (serial::bytesize_t bytesize)
+Serial::SerialImpl::setBytesize (serial_cpp::bytesize_t bytesize)
 {
   bytesize_ = bytesize;
   if (is_open_)
     reconfigurePort ();
 }
 
-serial::bytesize_t
+serial_cpp::bytesize_t
 Serial::SerialImpl::getBytesize () const
 {
   return bytesize_;
 }
 
 void
-Serial::SerialImpl::setParity (serial::parity_t parity)
+Serial::SerialImpl::setParity (serial_cpp::parity_t parity)
 {
   parity_ = parity;
   if (is_open_)
     reconfigurePort ();
 }
 
-serial::parity_t
+serial_cpp::parity_t
 Serial::SerialImpl::getParity () const
 {
   return parity_;
 }
 
 void
-Serial::SerialImpl::setStopbits (serial::stopbits_t stopbits)
+Serial::SerialImpl::setStopbits (serial_cpp::stopbits_t stopbits)
 {
   stopbits_ = stopbits;
   if (is_open_)
     reconfigurePort ();
 }
 
-serial::stopbits_t
+serial_cpp::stopbits_t
 Serial::SerialImpl::getStopbits () const
 {
   return stopbits_;
 }
 
 void
-Serial::SerialImpl::setFlowcontrol (serial::flowcontrol_t flowcontrol)
+Serial::SerialImpl::setFlowcontrol (serial_cpp::flowcontrol_t flowcontrol)
 {
   flowcontrol_ = flowcontrol;
   if (is_open_)
     reconfigurePort ();
 }
 
-serial::flowcontrol_t
+serial_cpp::flowcontrol_t
 Serial::SerialImpl::getFlowcontrol () const
 {
   return flowcontrol_;

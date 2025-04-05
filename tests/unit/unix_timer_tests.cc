@@ -1,10 +1,10 @@
 #include "gtest/gtest.h"
-#include "serial/impl/unix.h"
+#include "serial_cpp/impl/unix.h"
 
 #include <unistd.h>
 #include <stdlib.h>
 
-using serial::MillisecondTimer;
+using serial_cpp::MillisecondTimer;
 
 namespace {
 

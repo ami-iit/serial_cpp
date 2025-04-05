@@ -12,9 +12,9 @@
 #include <string>
 #include <vector>
 
-#include "serial/serial.h"
+#include "serial_cpp/serial.h"
 
-using serial::PortInfo;
+using serial_cpp::PortInfo;
 using std::string;
 using std::vector;
 
@@ -208,7 +208,7 @@ string rtrim(const string& str)
 }
 
 vector<PortInfo>
-serial::list_ports(void)
+serial_cpp::list_ports(void)
 {
     vector<PortInfo> devices_found;
     CFMutableDictionaryRef classes_to_match;

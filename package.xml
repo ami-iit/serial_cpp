@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <package>
-  <name>serial</name>
-  <version>1.2.1</version>
+  <name>serial_cpp</name>
+  <version>1.3.0</version>
   <description>
-    Serial is a cross-platform, simple to use library for using serial ports on computers.
+    serial_cpp is a cross-platform, simple to use library for using serial ports on computers.
     This library provides a C++, object oriented interface for interacting with RS-232
     like devices on Linux and Windows.
   </description>
 
-  <maintainer email="william@osrfoundation.org">William Woodall</maintainer>
+  <maintainer email="silvio@traversaro.it">William Woodall</maintainer>
 
   <license>MIT</license>
 
   <url type="website">http://wjwwood.github.com/serial/</url>
-  <url type="repository">https://github.com/wjwwood/serial</url>
-  <url type="bugtracker">https://github.com/wjwwood/serial/issues</url>
+  <url type="repository">https://github.com/ami-iit/serial_cpp</url>
+  <url type="bugtracker">https://github.com/ami-iit/serial_cpp/issues</url>
 
   <author email="wjwwood@gmail.com">William Woodall</author>
   <author email="ash.gti@gmail.com">John Harrison</author>
