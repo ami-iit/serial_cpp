@@ -19,7 +19,11 @@ Optional (for documentation):
 * [Doxygen](http://www.doxygen.org/) - Documentation generation tool
 * [graphviz](http://www.graphviz.org/) - Graph visualization software
 
-### Usage compiling from source
+### Example
+
+An example of usage of the library is provided in [`./examples/serial_cpp_example.cxx`](examples/serial_cpp_example.cxx)
+
+### Usage when compiling from source and installing
 
 First compile the project:
 
@@ -31,6 +35,31 @@ cmake --build build
 cmake --install build
 ~~~
 
+then, add the following CMake code in your CMake project, where `<target>` is the library or executable
+that requires `serial_cpp`:
+
+~~~cmake
+find_package(serial_cpp REQUIRED)
+
+target_link_libraries(<target> PRIVATE serial_cpp::serial_cpp)
+~~~
+
+### Usage with CMake's FetchContent
+
+If you only need to use `serial_cpp` inside a given CMake project, it make sense to include it via the [CMake's `FetchContent` module](https://cmake.org/cmake/help/latest/module/FetchContent.html):
+
+~~~cmake
+FetchContent_Declare(
+  serial_cpp
+  GIT_REPOSITORY https://github.com/ami-iit/serial_cpp.git
+  GIT_TAG        v1.3.0 # or use the tag or commit you prefer
+)
+
+FetchContent_MakeAvailable(serial_cpp)
+
+target_link_libraries(<target> PRIVATE serial_cpp::serial_cpp)
+~~~
+
 ### Development commands
 
 `serial_cpp` is a pure C++ project that can be installed on any system, as long as CMake is available. However, we use [`pixi`](https://pixi.sh) to simplify development, to run the tests (the same run in CI) in pixi, run:
@@ -39,6 +68,17 @@ cmake --install build
 git clone https://github.com/ami-iit/serial_cpp.git
 pixi run test
 ~~~
+
+### Migration from `wjwwood/serial`
+
+The `serial_cpp` library started as a friendly fork of the [`wjwwood/serial`](https://github.com/wjwwood/serial). To migrate a project from `wjwwood/serial` to `serial_cpp`, the following modifications are needed:
+
+* Change the `#include <serial/serial.h>` inclusion to `#include <serial_cpp/serial.h>`
+* Change all `serial::` namespace to `serial_cpp::`
+
+Alternatively, in case you do not want to modify all your code from  `serial::` namespace to `serial_cpp::`, a compatibility header is provided, so that you can simply do the following:
+
+* Change the `#include <serial/serial.h>` inclusion to `#include <serial_cpp/serial_compat.h>`
 
 ### License
 

@@ -1,3 +1,5 @@
+This file documents notable changes to this project done before November 2012. For changes after that date, plase refers to the release notes of each release at https://github.com/ami-iit/serial_cpp/releases .
+
 # 1.1.0 10-24-2012
 
 * Converted the build system to catkin
