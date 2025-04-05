@@ -15,6 +15,7 @@ configure = { cmd = [
     "cmake",
     "-DCMAKE_BUILD_TYPE=Release",
     "-DBUILD_TESTING:BOOL=ON",
+    "-DBUILD_SHARED_LIBS:BOOL=ON",
     # Use the cross-platform Ninja generator
     "-G",
     "Ninja",
@@ -27,9 +28,11 @@ configure = { cmd = [
 ]}
 
 build = { cmd = "cmake --build .build --config Release", depends-on = ["configure"] }
-test = { cmd = "ctest --test-dir .build --build-config Release", depends-on = ["build"] }
+test_local = { cmd = "ctest --test-dir .build --build-config Release", depends-on = ["build"] }
 install = { cmd = ["cmake", "--install", ".build", "--config", "Release"], depends-on = ["build"] }
+check_package_installed = { cmd = ["cmake-package-check", "serial_cpp", "--targets", "serial_cpp::serial_cpp"], depends-on = ["install"] }
 uninstall = { cmd = ["cmake", "--build", ".build", "--target", "uninstall"]}
+test = { cmd = "echo 'All tests completed'", depends-on = ["test_local", "check_package_installed"] }
 
 [dependencies]
 cxx-compiler = "*"
@@ -37,3 +40,4 @@ cmake = "*"
 ninja = "*"
 pkg-config = "*"
 gtest = "*"
+cmake-package-check = "*"

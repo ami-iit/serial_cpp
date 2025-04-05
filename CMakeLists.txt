@@ -1,5 +1,22 @@
-cmake_minimum_required(VERSION 2.8.3...3.10)
-project(serial_cpp)
+cmake_minimum_required(VERSION 3.5...3.10)
+
+# Get name from package.xml to avoid duplicating the version number
+file(READ package.xml SERIAL_CPP_PACKAGE_XML)
+string(REGEX MATCH "<version>[0-9]+\\.[0-9]+\\.[0-9]+</version>" SERIAL_CPP_DIRTY_VERSION_STRING ${SERIAL_CPP_PACKAGE_XML})
+string(REGEX REPLACE "^<version>([0-9]+)\\.([0-9]+)\\.([0-9]+)</version>$" "\\1" SERIAL_CPP_MAJOR_VERSION "${SERIAL_CPP_DIRTY_VERSION_STRING}")
+string(REGEX REPLACE "^<version>([0-9]+)\\.([0-9]+)\\.([0-9]+)</version>$" "\\2" SERIAL_CPP_MINOR_VERSION "${SERIAL_CPP_DIRTY_VERSION_STRING}")
+string(REGEX REPLACE "^<version>([0-9]+)\\.([0-9]+)\\.([0-9]+)</version>$" "\\3" SERIAL_CPP_PATCH_VERSION "${SERIAL_CPP_DIRTY_VERSION_STRING}")
+
+project(serial_cpp VERSION ${SERIAL_CPP_MAJOR_VERSION}.${SERIAL_CPP_MINOR_VERSION}.${SERIAL_CPP_PATCH_VERSION})
+
+# CMake options
+
+# For historical reasons, the default library type is static, but shared is also supported
+option(BUILD_SHARED_LIBS "Build libraries as shared as opposed to static" OFF)
+option(BUILD_TESTING "Build tests" OFF)
+
+# Default install locations
+include(GNUInstallDirs)
 
 if(APPLE)
     find_library(IOKIT_LIBRARY IOKit)
@@ -11,6 +28,7 @@ set(serial_cpp_SRCS
     src/serial.cc
     include/serial_cpp/serial.h
     include/serial_cpp/v8stdint.h
+    include/serial_cpp/serial_compat.h
 )
 if(APPLE)
     # If OSX
@@ -28,41 +46,74 @@ endif()
 
 ## Add serial library
 add_library(${PROJECT_NAME} ${serial_cpp_SRCS})
+## Add alias for FetchContent/add_subdirectory usage
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+## Include directories
+target_include_directories(${PROJECT_NAME} PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+                                                  "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>")
+
+# Link neeed libraries
 if(APPLE)
-    target_link_libraries(${PROJECT_NAME} ${FOUNDATION_LIBRARY} ${IOKIT_LIBRARY})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${FOUNDATION_LIBRARY} ${IOKIT_LIBRARY})
 elseif(UNIX)
-    target_link_libraries(${PROJECT_NAME} rt pthread)
+    target_link_libraries(${PROJECT_NAME} PRIVATE rt pthread)
 else()
-    target_link_libraries(${PROJECT_NAME} setupapi)
+    target_link_libraries(${PROJECT_NAME} PRIVATE setupapi)
+endif()
+
+## Shared library support on Windows
+if(WIN32 AND BUILD_SHARED_LIBS)
+    set_target_properties(${PROJECT_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif()
 
 ## Uncomment for example
 add_executable(serial_cpp_example examples/serial_cpp_example.cc)
-add_dependencies(serial_cpp_example ${PROJECT_NAME})
-target_link_libraries(serial_cpp_example ${PROJECT_NAME})
+add_dependencies(serial_cpp_example ${PROJECT_NAME}::${PROJECT_NAME})
+target_link_libraries(serial_cpp_example ${PROJECT_NAME}::${PROJECT_NAME})
 
-## Include headers
-include_directories(include)
-
-## Install executable
+## Install library
 install(TARGETS ${PROJECT_NAME}
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
-    RUNTIME DESTINATION bin
+    EXPORT ${PROJECT_NAME}Targets
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 ## Install headers
-install(FILES include/serial_cpp/serial.h include/serial/v8stdint.h
-    DESTINATION include/serial)
+install(FILES include/serial_cpp/serial.h include/serial_cpp/v8stdint.h include/serial_cpp/serial_compat.h
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}")
 
-## Install CMake config
-install(FILES cmake/serial_cppConfig.cmake
-    DESTINATION share/serial_cpp/cmake)
+## Generate and install CMake config files
+include(CMakePackageConfigHelpers)
+
+set(SERIAL_CPP_CMAKE_FILES_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+
+install(EXPORT ${PROJECT_NAME}Targets
+        FILE ${PROJECT_NAME}Targets.cmake
+        NAMESPACE ${PROJECT_NAME}::
+        DESTINATION "${SERIAL_CPP_CMAKE_FILES_INSTALL_DIR}"
+)
+
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+  INSTALL_DESTINATION "${SERIAL_CPP_CMAKE_FILES_INSTALL_DIR}"
+)
+
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    VERSION "${serial_cpp_VERSION}"
+    COMPATIBILITY AnyNewerVersion
+)
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+              "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    DESTINATION "${SERIAL_CPP_CMAKE_FILES_INSTALL_DIR}")
 
 
 ## Install package.xml
 install(FILES package.xml
-    DESTINATION share/serial_cpp)
+    DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}")
 
 ## Tests
 include(CTest)
