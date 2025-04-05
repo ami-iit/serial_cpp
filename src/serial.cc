@@ -9,12 +9,12 @@
 # define alloca __builtin_alloca
 #endif
 
-#include "serial/serial.h"
+#include "serial_cpp/serial.h"
 
 #ifdef _WIN32
-#include "serial/impl/win.h"
+#include "serial_cpp/impl/win.h"
 #else
-#include "serial/impl/unix.h"
+#include "serial_cpp/impl/unix.h"
 #endif
 
 using std::invalid_argument;
@@ -24,13 +24,13 @@ using std::vector;
 using std::size_t;
 using std::string;
 
-using serial::Serial;
-using serial::SerialException;
-using serial::IOException;
-using serial::bytesize_t;
-using serial::parity_t;
-using serial::stopbits_t;
-using serial::flowcontrol_t;
+using serial_cpp::Serial;
+using serial_cpp::SerialException;
+using serial_cpp::IOException;
+using serial_cpp::bytesize_t;
+using serial_cpp::parity_t;
+using serial_cpp::stopbits_t;
+using serial_cpp::flowcontrol_t;
 
 class Serial::ScopedReadLock {
 public:
@@ -63,7 +63,7 @@ private:
   SerialImpl *pimpl_;
 };
 
-Serial::Serial (const string &port, uint32_t baudrate, serial::Timeout timeout,
+Serial::Serial (const string &port, uint32_t baudrate, serial_cpp::Timeout timeout,
                 bytesize_t bytesize, parity_t parity, stopbits_t stopbits,
                 flowcontrol_t flowcontrol)
  : pimpl_(new SerialImpl (port, baudrate, bytesize, parity,
@@ -104,7 +104,7 @@ Serial::available ()
 bool
 Serial::waitReadable ()
 {
-  serial::Timeout timeout(pimpl_->getTimeout ());
+  serial_cpp::Timeout timeout(pimpl_->getTimeout ());
   return pimpl_->waitReadable(timeout.read_timeout_constant);
 }
 
@@ -297,12 +297,12 @@ Serial::getPort () const
 }
 
 void
-Serial::setTimeout (serial::Timeout &timeout)
+Serial::setTimeout (serial_cpp::Timeout &timeout)
 {
   pimpl_->setTimeout (timeout);
 }
 
-serial::Timeout
+serial_cpp::Timeout
 Serial::getTimeout () const {
   return pimpl_->getTimeout ();
 }

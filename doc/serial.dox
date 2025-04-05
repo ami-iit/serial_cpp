@@ -12,13 +12,13 @@ Want to use it with ROS(Robot Operating System)? No problem, it compiles as a un
 
 Ready to jump in?
 - Checkout our examples: \ref serial_example.cc
-- Look at the main class documentation: \ref serial::Serial
+- Look at the main class documentation: \ref serial_cpp::Serial
 
 \section features Features
 - Linux, Mac OS X, and Windows Support
 - Easy to use interface (modeled after PySerial)
 - Minimal dependencies (cmake)
-- Complete timeout control \ref serial::Serial::setTimeout
+- Complete timeout control \ref serial_cpp::Serial::setTimeout
 - Check and set handshaking lines (CTS, DSR, RI, CD and RTS, DTR)
 - Block for changes in handshaking lines (Linux and Windows)
 - Flush I/O separately and block until all writing done
@@ -32,7 +32,7 @@ Ready to jump in?
 
 \subsection building Compiling
 
-Once you have gathered the dependencies, you need to checkout the software from github.com: 
+Once you have gathered the dependencies, you need to checkout the software from github.com:
 
 <pre>
     git clone git://github.com/wjwwood/serial.git

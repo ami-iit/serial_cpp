@@ -25,7 +25,7 @@ void loop()
 // #define private public
 // #define protected public
 
-#include "serial/serial.h"
+#include "serial_cpp/serial.h"
 
 #if defined(__linux__)
 #include <pty.h>
@@ -33,7 +33,7 @@ void loop()
 #include <util.h>
 #endif
 
-using namespace serial;
+using namespace serial_cpp;
 
 using std::string;
 
