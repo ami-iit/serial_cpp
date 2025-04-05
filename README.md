@@ -1,63 +1,54 @@
-# Serial Communication Library
-
-[![Build Status](https://travis-ci.org/wjwwood/serial.svg?branch=master)](https://travis-ci.org/wjwwood/serial)*(Linux and OS X)* [![Build Status](https://ci.appveyor.com/api/projects/status/github/wjwwood/serial)](https://ci.appveyor.com/project/wjwwood/serial)*(Windows)*
+# `serial_cpp` Serial Communication Library
 
 This is a cross-platform library for interfacing with rs-232 serial like ports written in C++. It provides a modern C++ interface with a workflow designed to look and feel like PySerial, but with the speed and control provided by C++. 
 
-This library is in use in several robotics related projects and can be built and installed to the OS like most unix libraries with make and then sudo make install, but because it is a catkin project it can also be built along side other catkin projects in a catkin workspace.
+Serial is a class that provides the basic interface common to serial libraries (open, close, read, write, etc..) and requires no extra dependencies. It also provides tight control over timeouts and control over handshaking lines.
 
-Serial is a class that provides the basic interface common to serial libraries (open, close, read, write, etc..) and requires no extra dependencies. It also provides tight control over timeouts and control over handshaking lines. 
+`serial_cpp` started as a friendly fork [`wjwwood/serial`](https://github.com/wjwwood/serial), see https://github.com/wjwwood/serial/issues/312 for more details.
 
-### Documentation
-
-Website: http://wjwwood.github.io/serial/
-
-API Documentation: http://wjwwood.github.io/serial/doc/1.1.0/index.html
+> [!NOTE]
+> Most projects in the [`ami-iit`](https://github.com/ami-iit) use the dash (`-`) as a separator inside names. This repo makes an exception as it is a derivation of a project originally started in the ROS community, where the use of underscore (`_`) is tipically used, and so the original mantainer asked to keep an underscore, see https://github.com/wjwwood/serial/issues/312#issuecomment-2773775993 .
 
 ### Dependencies
 
 Required:
-* [catkin](http://www.ros.org/wiki/catkin) - cmake and Python based buildsystem
+* C++ compiler
 * [cmake](http://www.cmake.org) - buildsystem
-* [Python](http://www.python.org) - scripting language
-  * [empy](http://www.alcyone.com/pyos/empy/) - Python templating library
-  * [catkin_pkg](http://pypi.python.org/pypi/catkin_pkg/) - Runtime Python library for catkin
 
 Optional (for documentation):
 * [Doxygen](http://www.doxygen.org/) - Documentation generation tool
 * [graphviz](http://www.graphviz.org/) - Graph visualization software
 
-### Install
+### Usage compiling from source
 
-Get the code:
+First compile the project:
 
-    git clone https://github.com/wjwwood/serial.git
+~~~bash
+git clone https://github.com/ami-iit/serial_cpp.git
+cd serial_cpp
+cmake -DCMAKE_BUILD_TYPE=Release -Bbuild -S. -DCMAKE_INSTALL_PREFIX=<desired_install_dir>
+cmake --build build
+cmake --install build
+~~~
 
-Build:
+### Development commands
 
-    make
+`serial_cpp` is a pure C++ project that can be installed on any system, as long as CMake is available. However, we use [`pixi`](https://pixi.sh) to simplify development, to run the tests (the same run in CI) in pixi, run:
 
-Build and run the tests:
-
-    make test
-
-Build the documentation:
-
-    make doc
-
-Install:
-
-    make install
+~~~
+git clone https://github.com/ami-iit/serial_cpp.git
+pixi run test
+~~~
 
 ### License
 
 [The MIT License](LICENSE)
 
+### Mantainers
+
+* Silvio Traversaro ([@traversaro](https://github.com/traversaro))
+
 ### Authors
 
-William Woodall <wjwwood@gmail.com>
-John Harrison <ash.gti@gmail.com>
-
-### Contact
-
-William Woodall <william@osrfoundation.org>
+* William Woodall <wjwwood@gmail.com>
+* John Harrison <ash.gti@gmail.com>
