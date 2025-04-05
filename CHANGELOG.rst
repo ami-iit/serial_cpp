@@ -2,6 +2,10 @@
 Changelog for package serial
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+This file documents notable changes to this project done before April 2015.
+ 
+For changes after that date, plase refers to the release notes of each release at https://github.com/ami-iit/serial_cpp/releases .
+
 1.2.1 (2015-04-21)
 ------------------
 * Removed the use of a C++11 feature for compatibility with older browsers.
