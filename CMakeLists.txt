@@ -16,8 +16,8 @@ option(BUILD_SHARED_LIBS "Build libraries as shared as opposed to static" OFF)
 option(BUILD_TESTING "Build tests" OFF)
 option(serial_cpp_INSTALL "Enable generation of serial_cpp install targets" ON)
 mark_as_advanced(serial_cpp_INSTALL)
-option(serial_cpp_FORCE_BUILD_TESTING "Enable tests even if project is the project was included via add_subdirectory/FetchContent" OFF)
-mark_as_advanced(serial_cpp_FORCE_BUILD_TESTING)
+option(serial_cpp_FORCE_RESPECT_BUILD_TESTING "If also BUILD_TESTING is ON, enable tests even if project was included via add_subdirectory/FetchContent" OFF)
+mark_as_advanced(serial_cpp_FORCE_RESPECT_BUILD_TESTING)
 
 # Detect if project is top level or not (fall back for CMake < 3.21)
 if(CMAKE_VERSION VERSION_LESS "3.21.0")
@@ -134,9 +134,9 @@ endif()
 ## Tests
 include(CTest)
 # Tests are enabled if BUILD_TESTING is enabled and PROJECT_IS_TOP_LEVEL is ON,
-# or if serial_cpp_FORCE_BUILD_TESTING is ON, so if you include the project
+# or if serial_cpp_FORCE_RESPECT_BUILD_TESTING is ON, so if you include the project
 # via FetchContent or add_subdirectory and if you want to compile tests, you
-# need to set both BUILD_TESTING and serial_cpp_FORCE_BUILD_TESTING to ON
-if(BUILD_TESTING OR (PROJECT_IS_TOP_LEVEL OR serial_cpp_FORCE_BUILD_TESTING))
+# need to set both BUILD_TESTING and serial_cpp_FORCE_RESPECT_BUILD_TESTING to ON
+if(BUILD_TESTING OR (PROJECT_IS_TOP_LEVEL OR serial_cpp_FORCE_RESPECT_BUILD_TESTING))
     add_subdirectory(tests)
 endif()
