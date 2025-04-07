@@ -15,7 +15,9 @@ project(serial_cpp VERSION ${SERIAL_CPP_MAJOR_VERSION}.${SERIAL_CPP_MINOR_VERSIO
 option(BUILD_SHARED_LIBS "Build libraries as shared as opposed to static" OFF)
 option(BUILD_TESTING "Build tests" OFF)
 option(serial_cpp_INSTALL "Enable generation of serial_cpp install targets" ON)
+mark_as_advanced(serial_cpp_INSTALL)
 option(serial_cpp_FORCE_BUILD_TESTING "Enable tests even if project is the project was included via add_subdirectory/FetchContent" OFF)
+mark_as_advanced(serial_cpp_FORCE_BUILD_TESTING)
 
 # Detect if project is top level or not (fall back for CMake < 3.21)
 if(CMAKE_VERSION VERSION_LESS "3.21.0")
