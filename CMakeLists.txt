@@ -137,6 +137,6 @@ include(CTest)
 # or if serial_cpp_FORCE_RESPECT_BUILD_TESTING is ON, so if you include the project
 # via FetchContent or add_subdirectory and if you want to compile tests, you
 # need to set both BUILD_TESTING and serial_cpp_FORCE_RESPECT_BUILD_TESTING to ON
-if(BUILD_TESTING OR (PROJECT_IS_TOP_LEVEL OR serial_cpp_FORCE_RESPECT_BUILD_TESTING))
+if(BUILD_TESTING AND (PROJECT_IS_TOP_LEVEL OR serial_cpp_FORCE_RESPECT_BUILD_TESTING))
     add_subdirectory(tests)
 endif()
