@@ -53,7 +53,7 @@ include(FetchContent)
 FetchContent_Declare(
   serial_cpp
   GIT_REPOSITORY https://github.com/ami-iit/serial_cpp.git
-  GIT_TAG        v1.3.1 # or use the tag or commit you prefer
+  GIT_TAG        v1.3.2 # or use the tag or commit you prefer
 )
 
 FetchContent_MakeAvailable(serial_cpp)
