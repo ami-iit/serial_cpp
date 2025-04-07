@@ -15,6 +15,17 @@ project(serial_cpp VERSION ${SERIAL_CPP_MAJOR_VERSION}.${SERIAL_CPP_MINOR_VERSIO
 option(BUILD_SHARED_LIBS "Build libraries as shared as opposed to static" OFF)
 option(BUILD_TESTING "Build tests" OFF)
 option(serial_cpp_INSTALL "Enable generation of serial_cpp install targets" ON)
+option(serial_cpp_FORCE_BUILD_TESTING "Enable tests even if project is the project was included via add_subdirectory/FetchContent" OFF)
+
+# Detect if project is top level or not (fall back for CMake < 3.21)
+if(CMAKE_VERSION VERSION_LESS "3.21.0")
+    if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+        set(PROJECT_IS_TOP_LEVEL ON)
+    else()
+        set(PROJECT_IS_TOP_LEVEL OFF)
+    endif()
+endif()
+
 
 # Default install locations
 include(GNUInstallDirs)
@@ -120,6 +131,10 @@ endif()
 
 ## Tests
 include(CTest)
-if(BUILD_TESTING)
+# Tests are enabled if BUILD_TESTING is enabled and PROJECT_IS_TOP_LEVEL is ON,
+# or if serial_cpp_FORCE_BUILD_TESTING is ON, so if you include the project
+# via FetchContent or add_subdirectory and if you want to compile tests, you
+# need to set serial_cpp_FORCE_BUILD_TESTING to ON
+if((BUILD_TESTING OR PROJECT_IS_TOP_LEVEL) serial_cpp_FORCE_BUILD_TESTING)
     add_subdirectory(tests)
 endif()
