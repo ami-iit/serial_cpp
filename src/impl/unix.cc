@@ -725,7 +725,7 @@ Serial::SerialImpl::getPort () const
 }
 
 void
-Serial::SerialImpl::setTimeout (serial_cpp::Timeout &timeout)
+Serial::SerialImpl::setTimeout (const serial_cpp::Timeout &timeout)
 {
   timeout_ = timeout;
 }
